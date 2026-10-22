@@ -1,0 +1,13 @@
+
+# Secrets et configuration locale
+.env
+
+# Dépendances générées
+/vendor/
+/node_modules/
+
+# Fichiers macOS
+.DS_Store
+
+# Journaux
+/storage/logs/*
