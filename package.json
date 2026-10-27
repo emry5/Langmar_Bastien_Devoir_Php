@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "dependencies": {
-    "bootstrap": "^5.3.8"
-  },
   "devDependencies": {
     "sass": "^1.106.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8"
   }
 }

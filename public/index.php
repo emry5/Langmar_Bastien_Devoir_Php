@@ -1,13 +1,11 @@
 <?php
 
+require_once __DIR__ . '/../Core/autoloader.php';
+Autoloader::register();
 /**
  * Model, code php
  */
-if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
-    $uri = 'https://';
-} else {
-    $uri = 'htttps://';
-}
-$uri .= $_SERVER['HTTP_HOST'];
-header('Location: ' . $uri . '/Devoir-php/templates/home.php');
+
+require_once __DIR__ . '/../templates/home/visitor.php';
+
 exit;

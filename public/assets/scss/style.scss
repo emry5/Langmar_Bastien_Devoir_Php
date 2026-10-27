@@ -1,0 +1,44 @@
+$primary: #0d6efd;
+$secondary: #6c757d;
+@import "bootstrap/scss/bootstrap";
+
+/* Header */
+.site-header {
+    background-color: white !important;
+    color: black !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow:2px 3px 4px #6c757d;
+    
+}
+.site-header p {
+    margin: 0;
+    line-height: 1;
+}
+
+.btn{
+    background-color: #384050;
+    color: white;
+
+}
+
+.btn:hover{
+    background-color: #384050;
+    transition: none;
+}
+
+/* Footer */
+
+.site-footer{
+    background-color: white !important;
+    color: black !important;
+    text-align: center;
+    padding: 15px 0;
+    box-shadow:2px -3px 4px #6c757d;
+    
+}
+
+.site-footer p {
+    margin-bottom: 0;
+}
