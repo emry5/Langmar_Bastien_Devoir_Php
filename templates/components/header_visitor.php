@@ -18,12 +18,12 @@
     <nav class="navbar navbar-expand-lg container">
 
         <span class="site-title">
-            <p>Touche pas au klaxon</p>
+            <a href="/Devoir-php/public/index.php">Touche pas au klaxon</a>
         </span>
 
         <ul class="navbar-nav ms-auto align-items-lg-end gap-lg-3">
             <li class="nav-item">
-                <a class="btn btn-create" href="#">Connexion</a>
+                <a class="btn btn-create" href="/Devoir-php/public/index.php?page=formulaire">Connexion</a>
             </li>
         </ul>
     </nav>

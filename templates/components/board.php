@@ -1,40 +1,73 @@
-<!DOCTYPE html>
-<html lang="fr">
+<?php
+$trajets = $trajets ?? [];
+?>
 
-<head>
-    <meta charset='UTF-8'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Devoir-php/public/assets/css/style.css">
-</head>
+<div class="table-container">
 
-<body>
-    <main>
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Départ</th>
-                        <th>Date</th>
-                        <th>Heure</th>
-                        <th>Destination</th>
-                        <th>Date</th>
-                        <th>Heure</th>
-                        <th>Places</th>
+    <?php if (empty($trajets)): ?>
+
+        <p>Aucun trajet disponible.</p>
+
+    <?php else: ?>
+
+        <table class="table">
+
+            <thead class="table-head">
+                <tr class="table-row">
+                    <th class="thead-item">Départ</th>
+                    <th class="thead-item">Date</th>
+                    <th class="thead-item">Heure</th>
+                    <th class="thead-item">Destination</th>
+                    <th class="thead-item">Date</th>
+                    <th class="thead-item">Heure</th>
+                    <th class="thead-item">Places</th>
+                </tr>
+            </thead>
+
+            <tbody class="tbody">
+
+                <?php foreach ($trajets as $trajet): ?>
+
+                    <tr
+                        class="trajet-row"
+                        data-trajet-id="<?= (int) $trajet['trajet_id'] ?>">
+
+                        <td class="tbody-item">
+                            <?= htmlspecialchars($trajet['depart'], ENT_QUOTES, 'UTF-8') ?>
+                        </td>
+
+                        <td class="tbody-item">
+                            <?= htmlspecialchars($trajet['date_depart'], ENT_QUOTES, 'UTF-8') ?>
+                        </td>
+
+                        <td class="tbody-item">
+                            <?= htmlspecialchars(substr($trajet['heure_depart'], 0, 5), ENT_QUOTES, 'UTF-8') ?>
+                        </td>
+
+                        <td class="tbody-item">
+                            <?= htmlspecialchars($trajet['arrivee'], ENT_QUOTES, 'UTF-8') ?>
+                        </td>
+
+                        <td class="tbody-item">
+                            <?= htmlspecialchars($trajet['date_arrivee'], ENT_QUOTES, 'UTF-8') ?>
+                        </td>
+
+                        <td class="tbody-item">
+                            <?= htmlspecialchars(substr($trajet['heure_arrivee'], 0, 5), ENT_QUOTES, 'UTF-8') ?>
+                        </td>
+
+                        <td class="tbody-item">
+                            <?= htmlspecialchars((string) $trajet['places_disponibles'], ENT_QUOTES, 'UTF-8') ?>
+                        </td>
+
                     </tr>
-                </thead>
-                <tbody>
-                    <?php for ($line = 1; $line <= 7; $line++): ?>
-                        <tr>
-                            <?php for ($col = 1; $col <= 7; $col++): ?>
-                                <td> xxx <?= $line ?>, xxx <?= $col ?></td>
-                            <?php endfor; ?>
-                        </tr>
-                    <?php endfor; ?>
-                </tbody>
-            </table>
-        </div>
-    </main>
-</body>
 
-</html>
+                <?php endforeach; ?>
+
+            </tbody>
+
+        </table>
+
+    <?php endif; ?>
+
+</div>

@@ -6,50 +6,69 @@ CREATE DATABASE IF NOT EXISTS touche_pas_au_klaxon
 USE touche_pas_au_klaxon;
 
 CREATE TABLE IF NOT EXISTS utilisateurs (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
     prenom VARCHAR(100) NOT NULL,
     telephone VARCHAR(20) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE
-);
+    email VARCHAR(255) NOT NULL UNIQUE,
+    mot_de_passe VARCHAR(255) NOT NULL
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS agences (
     id_agence INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    ville VARCHAR(50) NOT NULL UNIQUE
-);
+    villes VARCHAR(150) NOT NULL UNIQUE
+) ENGINE=InnoDB;
 
 
 
 CREATE TABLE IF NOT EXISTS trajets (
-    id_trajet INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    depart_id INT NOT NULL,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    utilisateur_id INT NOT NULL,
+    depart_id INT UNSIGNED NOT NULL,
+    arrivee_id INT UNSIGNED NOT NULL,
     date_depart DATE NOT NULL,
     heure_depart TIME NOT NULL,
-    arrivee_id INT NOT NULL,
     date_arrivee DATE NOT NULL,
     heure_arrivee TIME NOT NULL,
-    places_disponibles INT UNSIGNED NOT NULL DEFAULT 0,
+    places_totales INT NOT NULL,
+    places_disponibles INT NOT NULL,
 
-    FOREIGN KEY(depart_id)
+    CONSTRAINT fk_trajets_utilisateurs
+        FOREIGN KEY (utilisateur_id)
+        REFERENCES utilisateurs(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_trajets_depart
+        FOREIGN KEY (depart_id)
         REFERENCES agences(id_agence),
 
-    FOREIGN KEY(arrivee_id)
-        REFERENCES agences(id_agence),
+    CONSTRAINT fk_trajets_arrivee
+        FOREIGN KEY (arrivee_id)
+        REFERENCES agences(id_agence)
 
-);
+) ENGINE=InnoDB;
 
-CREATE VIEW vue_trajets AS 
-SELECT 
-    t.id_trajet,
-    dep.ville AS depart,
+
+
+CREATE OR REPLACE VIEW vue_trajets AS
+SELECT
+    t.id AS trajet_id,
+    t.depart_id,
+    dep.villes AS depart,
     t.date_depart,
     t.heure_depart,
-    arr.ville AS arrivee,
+    t.arrivee_id,
+    arr.villes AS arrivee,
     t.date_arrivee,
     t.heure_arrivee,
-    t.places_disponibles
-FROM trajets t 
-JOIN agences dep
-    ON t.depart_id = dep.id_agence
-JOIN agences arr
-    ON t.arrivee_id = arr.id_agence;
+    t.places_totales,
+    t.places_disponibles,
+    u.id AS utilisateurs_id,
+    u.nom,
+    u.prenom,
+    u.telephone,
+    u.email
+FROM trajets t
+INNER JOIN agences dep ON t.depart_id = dep.id_agence
+INNER JOIN agences arr ON t.arrivee_id = arr.id_agence
+INNER JOIN utilisateurs u ON t.utilisateur_id = u.id;
