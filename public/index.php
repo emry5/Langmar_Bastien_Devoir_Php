@@ -1,13 +1,11 @@
 <?php
 
-/**
- * Model, code php
- */
-if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
-    $uri = 'https://';
-} else {
-    $uri = 'htttps://';
-}
-$uri .= $_SERVER['HTTP_HOST'];
-header('Location: ' . $uri . '/Devoir-php/templates/home.php');
-exit;
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once __DIR__ . '/../Core/autoloader.php';
+Autoloader::register();
+
+require_once __DIR__ . '/../Core/Database.php';
+require_once __DIR__ . '/../Routeur/Routeur.php';
