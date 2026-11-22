@@ -9,17 +9,23 @@
 </head>
 
 <body>
-
-    <?php require __DIR__ . '/../components/header_visitor.php'; ?>
+    <!-- Page visiteur -->
+    <?php /* Header visiteur */
+    require __DIR__ . '/../components/HeaderVisitor.php';
+    ?>
 
     <main class="home">
         <p class="message-accueil">Pour obtenir plus d'informations sur un trajet, veuillez vous connecter</p>
 
-        <?php require __DIR__ . '/../components/board.php'; ?>
+        <?php /* Tableau des trajets vue visiteur */
+        require __DIR__ . '/../components/Board.php';
+        ?>
 
     </main>
 
-    <?php require __DIR__ . '/../components/footer.php'; ?>
+    <?php /* Footer */
+    require __DIR__ . '/../components/Footer.php';
+    ?>
 
 </body>
 

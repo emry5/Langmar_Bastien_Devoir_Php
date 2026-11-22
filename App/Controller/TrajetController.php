@@ -10,36 +10,7 @@ class TrajetController
         $this->trajetModel = new Trajet($db);
     }
 
-    // Afficher les trajets pour les visiteurs
-    public function afficherTrajets()
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $trajets = $this->trajetModel->getAllTrajets();
-
-        require __DIR__ . '/../../templates/home/visitor.php';
-    }
-
-    // Afficher les trajets pour les utilisateurs connectés
-    public function afficherTrajetsUtilisateur()
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: index.php?page=formulaire');
-            exit;
-        }
-
-        $trajets = $this->trajetModel->getAllTrajets();
-
-        require __DIR__ . '/../../templates/home/user.php';
-    }
-
-    // Récupérer les informations d'un trajet pour la fenêtre modale
+    /* Récupérer les informations d'un trajet pour la fenêtre modale */
     public function afficherDetailsTrajet()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -74,7 +45,7 @@ class TrajetController
         exit;
     }
 
-    // Afficher et traiter le formulaire de création
+    /* Afficher et traiter le formulaire de création de trajet */
     public function creerTrajet()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -101,7 +72,7 @@ class TrajetController
             $placesTotales = $_POST['places_totales'] ?? '';
             $placesDisponibles = $_POST['places_disponibles'] ?? '';
 
-            // Conserver les valeurs saisies en cas d'erreur
+            /* Conserver les valeurs saisies en cas d'erreur */
             $donnees = [
                 'depart_id' => $departId,
                 'arrivee_id' => $arriveeId,
@@ -190,10 +161,10 @@ class TrajetController
             }
         }
 
-        require __DIR__ . '/../../templates/components/creer_trajet.php';
+        require __DIR__ . '/../../templates/components/CreerTrajet.php';
     }
 
-    // Afficher et traiter le formulaire de modification
+    /* Afficher et traiter le formulaire de modification */
     public function modifierTrajet()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -214,7 +185,7 @@ class TrajetController
         $id = (int) $_GET['id'];
         $utilisateurId = (int) $_SESSION['user_id'];
 
-        // Vérifier que le trajet appartient à l'utilisateur connecté
+        /* Vérifier que le trajet appartient à l'utilisateur connecté */
         $trajet = $this->trajetModel->getTrajetByIdAndUtilisateur(
             $id,
             $utilisateurId
@@ -318,30 +289,30 @@ class TrajetController
             }
         }
 
-        require __DIR__ . '/../../templates/components/modifier_trajet.php';
+        require __DIR__ . '/../../templates/components/ModifierTrajet.php';
     }
 
-    // Supprimer un trajet
+    /* Supprimer un trajet */
     public function supprimerTrajet()
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Vérifier que l'utilisateur est connecté
+        /* Vérifier que l'utilisateur est connecté */
         if (!isset($_SESSION['user_id'])) {
             header('Location: index.php?page=formulaire');
             exit;
         }
 
-        // La suppression doit obligatoirement passer par POST
+        /* La suppression doit obligatoirement passer par POST */
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo "Méthode non autorisée.";
             exit;
         }
 
-        // Vérifier l'identifiant reçu
+        /* Vérifier l'identifiant reçu */
         if (
             !isset($_POST['id']) ||
             !ctype_digit((string) $_POST['id'])
@@ -354,7 +325,7 @@ class TrajetController
         $id = (int) $_POST['id'];
         $utilisateurId = (int) $_SESSION['user_id'];
 
-        // Supprimer uniquement si le trajet appartient à l'utilisateur
+        /* Supprimer uniquement si le trajet appartient à l'utilisateur */
         $supprime = $this->trajetModel->supprimerTrajet(
             $id,
             $utilisateurId
