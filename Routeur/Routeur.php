@@ -5,47 +5,92 @@ $page = $_GET['page'] ?? 'home';
 
 switch ($page) {
 
-    // Accueil des visiteurs
+    /* Accueil des visiteurs */
     case 'home':
 
         $database = new Database();
         $pdo = $database->getConnection();
 
-        $controller = new TrajetController($pdo);
-        $controller->afficherTrajets();
+        $controller = new HomeController($pdo);
+        $controller->afficherAccueil();
 
         break;
 
-    // Formulaire de connexion
+    /* Formulaire de connexion */
     case 'formulaire':
 
-        require __DIR__ . '/../templates/components/formulaire.php';
+        require __DIR__ . '/../templates/components/Formulaire.php';
 
         break;
 
-    // Traitement de la connexion
+    /* Traitement de la connexion */
     case 'connexion':
 
         $database = new Database();
         $pdo = $database->getConnection();
 
-        $controller = new UserController($pdo);
-        $controller->connexion();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: index.php?page=formulaire');
+            exit;
+        }
+
+        $email = trim($_POST['email'] ?? '');
+        $motDePasse = $_POST['password'] ?? '';
+
+        if (
+            !filter_var($email, FILTER_VALIDATE_EMAIL) ||
+            $motDePasse === ''
+        ) {
+            $erreur = "Veuillez renseigner une adresse e-mail valide et votre mot de passe.";
+            require __DIR__ . '/../templates/components/Formulaire.php';
+            break;
+        }
+
+        /* Vérification dans la table administrateur */
+        $adminController = new AdminController($pdo);
+        $administrateur = $adminController->verifierConnexion($email, $motDePasse);
+
+        if ($administrateur) {
+            $adminController->connecter($administrateur);
+        }
+
+        /* Vérification dans la table utilisateurs */
+        $userController = new UserController($pdo);
+        $user = $userController->verifierConnexion($email, $motDePasse);
+
+        if ($user) {
+            $userController->connecter($user);
+        }
+
+        /* Erreur si aucun compte ne correspond à la base de données */
+        $erreur = "Adresse e-mail ou mot de passe incorrect.";
+        require __DIR__ . '/../templates/components/Formulaire.php';
 
         break;
 
-    // Accueil des utilisateurs connectés
+    /* Accueil des utilisateurs connectés */
     case 'user':
 
         $database = new Database();
         $pdo = $database->getConnection();
 
-        $controller = new TrajetController($pdo);
-        $controller->afficherTrajetsUtilisateur();
+        $controller = new HomeController($pdo);
+        $controller->afficherAccueilUtilisateur();
 
         break;
 
-    // Détails d'un trajet
+    /* Accueil de l'administrateur */
+    case 'admin':
+
+        $database = new Database();
+        $pdo = $database->getConnection();
+
+        $controller = new AdminController($pdo);
+        $controller->afficherDashboard();
+
+        break;
+
+    /* Détails d'un trajet */
     case 'details_trajet':
 
         $database = new Database();
@@ -56,7 +101,7 @@ switch ($page) {
 
         break;
 
-    // Créer un trajet
+    /* Créer un trajet */
     case 'creer_trajet':
 
         $database = new Database();
@@ -67,7 +112,7 @@ switch ($page) {
 
         break;
 
-    // Modifier un trajet
+    /* Modifier un trajet */
     case 'modifier_trajet':
 
         $database = new Database();
@@ -78,7 +123,7 @@ switch ($page) {
 
         break;
 
-    // Supprimer un trajet
+    /* Supprimer un trajet */
     case 'supprimer_trajet':
 
         $database = new Database();
@@ -89,7 +134,51 @@ switch ($page) {
 
         break;
 
-    // Déconnexion
+    /* Créer une agence */
+    case 'creer_agence':
+
+        $database = new Database();
+        $pdo = $database->getConnection();
+
+        $controller = new AdminController($pdo);
+        $controller->creerAgence();
+
+        break;
+
+    /* Modifier une agence */
+    case 'modifier_agence':
+
+        $database = new Database();
+        $pdo = $database->getConnection();
+
+        $controller = new AdminController($pdo);
+        $controller->modifierAgence();
+
+        break;
+
+    /* Supprimer une agence */
+    case 'supprimer_agence':
+
+        $database = new Database();
+        $pdo = $database->getConnection();
+
+        $controller = new AdminController($pdo);
+        $controller->supprimerAgence();
+
+        break;
+
+    /* Supprimer un trajet depuis l'espace administrateur */
+    case 'admin_supprimer_trajet':
+
+        $database = new Database();
+        $pdo = $database->getConnection();
+
+        $controller = new AdminController($pdo);
+        $controller->supprimerTrajet();
+
+        break;
+
+    /* Déconnexion */
     case 'deconnexion':
 
         $database = new Database();
@@ -100,6 +189,18 @@ switch ($page) {
 
         break;
 
+    /* Déconnexion administrateur */
+    case 'admin_deconnexion':
+
+        $database = new Database();
+        $pdo = $database->getConnection();
+
+        $controller = new AdminController($pdo);
+        $controller->deconnexion();
+
+        break;
+
+    /* Page introuvable */
     default:
 
         http_response_code(404);

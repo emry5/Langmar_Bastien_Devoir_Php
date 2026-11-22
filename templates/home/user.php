@@ -11,17 +11,24 @@
 </head>
 
 <body>
-    <?php require __DIR__ . '/../components/header_logged-in.php'; ?>
+    <!-- Page utilisateur connecté -->
+    <?php /* Header utilisateur connecté */
+    require __DIR__ . '/../components/HeaderUser.php';
+    ?>
 
     <main>
 
         <h1>Bienvenue sur votre espace personnel</h1>
 
-        <?php require __DIR__ . '/../components/user-board.php'; ?>
+        <?php /* Tableau des trajets vue utilisateur connecté */
+        require __DIR__ . '/../components/UserBoard.php';
+        ?>
 
 
     </main>
-    <?php require __DIR__ . '/../components/footer.php'; ?>
+    <?php /* Footer */
+    require __DIR__ . '/../components/Footer.php';
+    ?>
 
 </body>
 

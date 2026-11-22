@@ -1,3 +1,4 @@
+
 <?php
 
 class UserController
@@ -9,7 +10,40 @@ class UserController
         $this->userModel = new UserModel($db);
     }
 
-    // Connexion d'un utilisateur
+    /* Vérification des identifiants utilisateur */
+    public function verifierConnexion($email, $password)
+    {
+        $user = $this->userModel->getUserByEmail($email);
+
+        if (
+            !$user ||
+            !password_verify($password, $user['mot_de_passe'])
+        ) {
+            return false;
+        }
+
+        return $user;
+    }
+
+    /* Connecter l'utilisateur */
+    public function connecter($user)
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        session_regenerate_id(true);
+
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_prenom'] = $user['prenom'];
+        $_SESSION['user_nom'] = $user['nom'];
+        $_SESSION['user_email'] = $user['email'];
+
+        header('Location: index.php?page=user');
+        exit;
+    }
+
+    /* Connexion d'un utilisateur */
     public function connexion()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -31,22 +65,11 @@ class UserController
                 $erreur = "Veuillez saisir une adresse e-mail valide.";
             } else {
 
-                $user = $this->userModel->getUserByEmail($email);
+                $user = $this->verifierConnexion($email, $password);
 
-                if (
-                    $user &&
-                    password_verify($password, $user['mot_de_passe'])
-                ) {
+                if ($user) {
 
-                    session_regenerate_id(true);
-
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['user_prenom'] = $user['prenom'];
-                    $_SESSION['user_nom'] = $user['nom'];
-                    $_SESSION['user_email'] = $user['email'];
-
-                    header('Location: index.php?page=user');
-                    exit;
+                    $this->connecter($user);
                 } else {
 
                     $erreur = "Adresse e-mail ou mot de passe incorrect.";
@@ -54,26 +77,10 @@ class UserController
             }
         }
 
-        require __DIR__ . '/../../templates/components/formulaire.php';
+        require __DIR__ . '/../../templates/components/Formulaire.php';
     }
 
-    // Afficher la page de l'utilisateur connecté
-    public function afficherEspaceUtilisateur()
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (!isset($_SESSION['user_id'])) {
-
-            header('Location: index.php?page=formulaire');
-            exit;
-        }
-
-        require __DIR__ . '/../../templates/home/user.php';
-    }
-
-    // Déconnexion
+    /* Déconnexion */
     public function deconnexion()
     {
         if (session_status() === PHP_SESSION_NONE) {
