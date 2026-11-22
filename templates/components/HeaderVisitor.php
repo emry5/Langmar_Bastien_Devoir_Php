@@ -14,7 +14,7 @@
             <li class="nav-item">
                 <a
                     class="btn btn-create"
-                    href="/Devoir-php/public/index.php?page=Formulaire">
+                    href="/Devoir-php/public/index.php?page=formulaire">
                     Connexion
                 </a>
             </li>
