@@ -41,6 +41,14 @@ VALUES
     ('Henry', 'Arthur', '0666554433', 'arthur.henry@email.fr', 'Mot2P4$s3');
 
 
+INSERT INTO administrateur (
+    nom,
+    prenom,
+    email,
+    mot_de_passe
+)
+VALUES 
+    ('Min', 'Ad', 'admin@email.fr', '4dM1n15tr4t3ur');
 -- =====================================================
 -- 2. INSERTION DES AGENCES
 -- =====================================================
