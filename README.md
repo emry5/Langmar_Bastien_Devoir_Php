@@ -3,6 +3,7 @@
 Touche pas au klaxon
 
 Il s'agit d'une application web de covoiturage développée en PHP sous une architecture MVC (Model, Vue, Controller), avec une base de données MySQL.
+Le MCD et MLD de la base de donnée sont disponible dans le dossier database du projet, dans le sous dossier MCD.
 
 L'application permet aux utilisateurs de consulter les trajets proposés, gérer leurs propre trajets et pour les administrateur de gérer les données de la plateforme (trajets, agences, utilisateurs). 
 
@@ -67,6 +68,9 @@ Devoir-php/
 ├── database/
 │   ├── create.sql
 │   └── seed.sql
+│   └── mcd
+│.      └── mcd_appli_php.pdf
+│.      └── mld_appli_php.odt
 │
 ├── public/
 │   ├── assets/
