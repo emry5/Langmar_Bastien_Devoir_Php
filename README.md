@@ -125,6 +125,4 @@ Ouvrir dans le navigateur :
 http://localhost/Devoir-php/public/index.php
 
 
-    ├── admin/
-    ├── components/
-    └── home/
+   
